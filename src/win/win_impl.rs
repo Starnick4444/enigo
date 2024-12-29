@@ -492,6 +492,17 @@ impl Enigo {
             'x' | 'X' => Key::X,
             'y' | 'Y' => Key::Y,
             'z' | 'Z' => Key::Z,
+            '0' => Key::Num0,
+            '1' => Key::Num1,
+            '2' => Key::Num2,
+            '3' => Key::Num3,
+            '4' => Key::Num4,
+            '5' => Key::Num5,
+            '6' => Key::Num6,
+            '7' => Key::Num7,
+            '8' => Key::Num8,
+            '9' => Key::Num9,
+            ' ' => Key::Space,
             _ => return,
         };
 

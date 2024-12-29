@@ -465,35 +465,37 @@ impl Enigo {
     }
 
     fn queue_char(&mut self, input_queue: &mut Vec<INPUT>, character: char, buffer: &mut [u16; 2]) {
-        // Windows uses uft-16 encoding. We need to check
-        // for variable length characters. As such some
-        // characters can be 32 bit long and those are
-        // encoded in what is called high and low surrogates.
-        // Each are 16 bit wide and need to be sent after
-        // another to the SendInput function
-        let result = character.encode_utf16(buffer);
-        for &utf16_surrogate in &*result {
-            input_queue.push(keybd_event(
-                // No need to check if it is an extended key because we only enter unicode
-                // chars here
-                KEYEVENTF_UNICODE,
-                // Must be zero
-                VIRTUAL_KEY(0),
-                utf16_surrogate,
-                self.dw_extra_info,
-            ));
-            input_queue.push(keybd_event(
-                // No need to check if it is an extended key because we only enter unicode
-                // chars here
-                KEYEVENTF_UNICODE | KEYEVENTF_KEYUP,
-                // Must be zero
-                VIRTUAL_KEY(0),
-                // TODO: Double check if this could also be utf16_surrogate (I think it doesn't
-                // make a difference)
-                result[0],
-                self.dw_extra_info,
-            ));
-        }
+        let key = match character {
+            'a' | 'A' => Key::A,
+            'b' | 'B' => Key::B,
+            'c' | 'C' => Key::C,
+            'd' | 'D' => Key::D,
+            'e' | 'E' => Key::E,
+            'f' | 'F' => Key::F,
+            'g' | 'G' => Key::G,
+            'h' | 'H' => Key::H,
+            'i' | 'I' => Key::I,
+            'j' | 'J' => Key::J,
+            'k' | 'K' => Key::K,
+            'l' | 'L' => Key::L,
+            'm' | 'M' => Key::M,
+            'n' | 'N' => Key::N,
+            'o' | 'O' => Key::O,
+            'p' | 'P' => Key::P,
+            'q' | 'Q' => Key::Q,
+            'r' | 'R' => Key::R,
+            's' | 'S' => Key::S,
+            't' | 'T' => Key::T,
+            'u' | 'U' => Key::U,
+            'v' | 'V' => Key::V,
+            'w' | 'W' => Key::W,
+            'x' | 'X' => Key::X,
+            'y' | 'Y' => Key::Y,
+            'z' | 'Z' => Key::Z,
+            _ => return,
+        };
+
+        let _ = self.queue_key(input_queue, key, Direction::Click);
     }
 
     /// Returns a list of all currently pressed keys
